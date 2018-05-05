@@ -1,0 +1,2 @@
+Electric vehicle,lithium battery
+Electric vehicle,electric motor system
