@@ -32,3 +32,4 @@ After all, use the command below to run the program.
 ```
 python tool.py
 ```
+__Note: the program will open a browser automatically when you start it, do not close the browser or there will be some errors.__
