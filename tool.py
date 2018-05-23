@@ -31,11 +31,14 @@ def get_html(rows, folder):
         link = row.findAll('td')[1].find('a')['href']
         link = 'http://patft.uspto.gov'+link
 
-        res = requests.get(link)
-        html = BeautifulSoup(res.text, 'html5lib')
+        while True:
+            res = requests.get(link)
+            html = BeautifulSoup(res.text, 'html5lib')
+            title = html.find('title')
+            if title:
+                break
 
-        title = html.find('title').text
-
+        title = title.text
         filename = title+'.htm'
         filename = filename.replace(':', '_')
 
@@ -97,17 +100,20 @@ def download_html(term1, term2):
 
     show_load_time = True # show a loading time of each page
     while not last_page:
-        #############################
-        if show_load_time:
-            START = time.clock()
-        #############################
-        res = requests.get(current_url)
-        #############################
-        if show_load_time:
-            print (time.clock()-START)
-        #############################
-        html = BeautifulSoup(res.text, 'html5lib')
-        tables = html.findAll('table')
+        while True:
+            ############################
+            if show_load_time:
+                START = time.clock()
+            #############################
+            res = requests.get(current_url)
+            ############################
+            if show_load_time:
+                print (time.clock()-START)
+            #############################
+            html = BeautifulSoup(res.text, 'html5lib')
+            tables = html.findAll('table')
+            if lem(tables) > 1:
+                break
         table = tables[1]
         rows = table.findAll('tr')[1:] # 50 rows of each page (may less than 50)
         print ("Rows:", len(rows))
