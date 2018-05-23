@@ -14,6 +14,10 @@ pip3 install pandas
 pip3 install selenium
 ```
 - [download selenium drivers](http://selenium-python.readthedocs.io/installation.html#drivers)
+  - [Chrome](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+  - [Edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
+  - [Firefox](https://github.com/mozilla/geckodriver/releases)
+  - [Safari](https://webkit.org/blog/6900/webdriver-support-in-safari-10/)
 
 ---
 ## How to use
