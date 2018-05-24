@@ -12,8 +12,8 @@ def process_fields(field1, field2):
     file = open('FieldList.txt', 'r')
     for line in file:
         op = line.split(',')
-        OptionDict[op[0].rstrip().lstrip()] = op[1].rstrip().lstrip()
-    return OptionDict[field1], OptionDict[field2]
+        OptionDict[op[0].lower().rstrip().lstrip()] = op[1].rstrip().lstrip()
+    return OptionDict[field1.lower()], OptionDict[field2.lower()]
 
 def process_BooleanOp(BooleanOp):
     if BooleanOp == 'ANDNOT':
