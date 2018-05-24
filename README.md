@@ -38,7 +38,7 @@ Boolean operator:
 
 Fields:
 
-| 52 Types |  |  |  |  |
+| 56 Types |  |  |  |  |
 | --- | --- | --- | --- | --- |
 | All Fields | Title | Abstract | Issue Date | Patent Number |
 | Application Date | Application Serial Number | Application Type | Applicant Name | Applicant City |
