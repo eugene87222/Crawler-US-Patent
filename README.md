@@ -24,7 +24,7 @@ pip3 install selenium
 You can either set the input terms by yourself or let the program to read input terms from input_terms.txt
 - If you want to set them by yourself, switch "input_from_txt" to "False" in [main.py](https://github.com/eugene87222/US-Patent/blob/master/main.py) and assign terms, fields and boolean operator directly.
 - If you want the program read terms from txt file, switch "input_from_txt" to "True" in [main.py](https://github.com/eugene87222/US-Patent/blob/master/main.py).
-In "input_terms.txt", the format of each line is <term1>,<field1>,<term2>,<field2>,<boolean operator>. __There must be four commas.__  
+In "input_terms.txt", the format of each line is _term1,field1,term2,field2,boolean operator_. __There must be four commas.__  
 e.g.  
 Electric vehicle,Title,lithium battery,All Fields,AND  
 SOC,Title,,,   
