@@ -38,11 +38,11 @@ def parse_html(html):
 
     title = re.sub(' +', ' ', title) # Patent Title
 
-    print (patentNo)
-    print (title)
-    print (date)
-    print (country)
-    print (abstract)
+    print(patentNo)
+    print(title)
+    print(date)
+    print(country)
+    print(abstract)
 
     # Applicant
     applicant = list()
@@ -75,7 +75,7 @@ def parse_html(html):
                     break
             break
 
-    print (applicant)
+    print(applicant)
 
     # CPC
     CPC = list()
@@ -97,7 +97,7 @@ def parse_html(html):
         IPC = IPC.split('; ')
         IPC = [re.sub(r'\(.*\)', '', i).replace('\xa0', ' ').lstrip().rstrip() for i in IPC]
 
-    print ('=================')
+    print('=================')
 
     return country, patentNo, date, title, abstract, applicant, CPC, IPC
 

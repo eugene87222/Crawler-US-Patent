@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 def get_A_C_D(folder):
     files = os.listdir(folder+'/html')
     for file in files:
-        print (file)
+        print(file)
         html = BeautifulSoup(open(folder +'/html/'+file, 'r'))
 
         p = html.find('p')

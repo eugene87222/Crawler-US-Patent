@@ -29,9 +29,9 @@ def process_patents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, sw
     if field2 == '':
         field2 = 'All Fields'
 
-    print ('Term1: '+term1+' with field: '+field1)
-    print (BooleanOp)
-    print ('Term2: '+term2+' with field: '+field2)
+    print('Term1: '+term1+' with field: '+field1)
+    print(BooleanOp)
+    print('Term2: '+term2+' with field: '+field2)
     
     BooleanOp = process_BooleanOp(BooleanOp)
     field1, field2 = process_fields(field1, field2)

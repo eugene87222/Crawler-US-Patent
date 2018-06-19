@@ -42,7 +42,7 @@ def get_html(term1, term2, rows, folder):
         file = open(folder+'/html/'+filename, 'w')
         file.write(res.text)
         file.close()
-        print (filename)
+        print(filename)
 
 ################################################
 # Tell selenium to input term1 / term2         #
@@ -115,7 +115,7 @@ def download_html(term1, field1, term2, field2, BooleanOp):
             res = requests.get(current_url)
             ############################
             if show_load_time:
-                print (time.clock()-START)
+                print(time.clock()-START)
             #############################
             html = BeautifulSoup(res.text, 'html5lib')
             tables = html.findAll('table')
@@ -123,9 +123,9 @@ def download_html(term1, field1, term2, field2, BooleanOp):
                 break
         table = tables[1]
         rows = table.findAll('tr')[1:]
-        print ("Rows:", len(rows))
+        print("Rows:", len(rows))
         PRE_patentNo = rows[0].findAll('td')[1].text
-        print ("1st No:", PRE_patentNo)
+        print("1st No:", PRE_patentNo)
 
         if not os.path.exists(folder):
             os.makedirs(folder)

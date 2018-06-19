@@ -34,4 +34,4 @@ if __name__ == '__main__':
         USpatent.process_patents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, switch_PARSE, switch_TXT)
 
     # total spending time
-    print (time.clock()-START_TIME)
+    print(time.clock()-START_TIME)
