@@ -18,7 +18,7 @@ from selenium.webdriver.support.ui import Select
 # param: rows   -> 50 results of each page                    #
 #        folder -> folder which html file will be saved at    #
 ###############################################################
-def get_html(term1, term2, rows, folder):
+def get_html(rows, folder):
     # if the folder doesn't exist, create one
     if not os.path.exists(folder+'/html'):
         os.makedirs(folder+'/html')
@@ -81,7 +81,7 @@ def get_next_page(html):
 # param: term1, term2 -> two terms                                 #
 ####################################################################
 def download_html(term1, field1, term2, field2, BooleanOp):
-    folder = term1+'_AND_'+term2
+    folder = term1+'_'+BooleanOp+'_'+term2
 
     # open a Firefox browser (can be changed to Chrome if you like)
     browser = webdriver.Firefox()
@@ -130,7 +130,7 @@ def download_html(term1, field1, term2, field2, BooleanOp):
         if not os.path.exists(folder):
             os.makedirs(folder)
 
-        get_html(term1, term2, rows, folder)
+        get_html(rows, folder)
 
         link = get_next_page(html)
         if link == 'None':

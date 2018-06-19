@@ -40,7 +40,7 @@ def process_patents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, sw
         DownloadHtml.download_html(term1, field1, term2, field2, BooleanOp)
     
     if switch_PARSE:
-        folder = term1+'_AND_'+term2
+        folder = term1+'_'+BooleanOp+'_'+term2
         files = os.listdir(folder+'/html')
 
         CPC_dict = dict()
@@ -90,7 +90,7 @@ def process_patents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, sw
         ParseHtml.Statistic2excel(folder, IPC_dict, CPC_dict)
 
     if switch_TXT:
-        folder = term1+'_AND_'+term2
+        folder = term1+'_'+BooleanOp+'_'+term2
         if not os.path.exists(folder+'/txt'):
             os.makedirs(folder+'/txt')
         GetAbstract.get_A_C_D(folder)
