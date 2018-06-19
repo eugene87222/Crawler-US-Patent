@@ -26,7 +26,7 @@ You can either set the input terms by yourself or let the program to read input 
 - If you want the program read terms from txt file, switch "input_from_txt" to "True" in [main.py](https://github.com/eugene87222/US-Patent/blob/master/main.py).
 In "input_terms.txt", the format of each line is <term1>,<field1>,<term2>,<field2>,<boolean operator>. __There must be four commas.__  
 e.g.  
-Electric vehicle,Title,lithium battery,All Fields,AND
+Electric vehicle,Title,lithium battery,All Fields,AND  
 SOC,Title,,,   
 ...
 
