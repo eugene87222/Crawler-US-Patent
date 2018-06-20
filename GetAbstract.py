@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 # get Abstract, Claims, Description of each patent        #
 # param: folder -> folder which txt file will be saved at #
 ###########################################################
-def get_A_C_D(folder):
+def GetACD(folder):
     files = os.listdir(folder+'/html')
     for file in files:
         print(file)

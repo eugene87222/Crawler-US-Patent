@@ -18,7 +18,7 @@ from selenium.webdriver.support.ui import Select
 # param: rows   -> 50 results of each page                    #
 #        folder -> folder which html file will be saved at    #
 ###############################################################
-def get_html(rows, folder):
+def GetHtml(rows, folder):
     # if the folder doesn't exist, create one
     if not os.path.exists(folder+'/html'):
         os.makedirs(folder+'/html')
@@ -50,12 +50,12 @@ def get_html(rows, folder):
 #        termID  -> ID of input box            #
 #        term    -> term which will be input   #
 ################################################
-def input_keyword(browser, termID, term):
+def InputKeyword(browser, termID, term):
     browser.find_element_by_id(termID).click()
     browser.find_element_by_id(termID).clear()
     browser.find_element_by_id(termID).send_keys(term)
 
-def select_field(browser, fieldID, value):
+def SelectField(browser, fieldID, value):
     browser.find_element_by_id(fieldID).click()
     browser.find_element_by_xpath("//option[@value='"+value+"']").click()
 
@@ -63,7 +63,7 @@ def select_field(browser, fieldID, value):
 # Check if the current page is not last page  #
 # param: html -> html code of current page    #
 ###############################################
-def get_next_page(html):
+def GetNextPage(html):
     tables = html.findAll('table')
     if tables:
         for table in tables:
@@ -80,18 +80,22 @@ def get_next_page(html):
 # Download the searching result of two input terms (term1, term2)  #
 # param: term1, term2 -> two terms                                 #
 ####################################################################
-def download_html(term1, field1, term2, field2, BooleanOp):
+def DownloadHtml(term1, field1, term2, field2, BooleanOp):
     folder = term1+'_'+BooleanOp+'_'+term2
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
     # open a Firefox browser (can be changed to Chrome if you like)
     browser = webdriver.Firefox()
     url = 'http://patft.uspto.gov/netahtml/PTO/search-bool.html'
     browser.get(url)
+    
+    time.sleep(5)
 
-    input_keyword(browser, 'trm1', term1)
-    select_field(browser, 'fld1', field1)
-    input_keyword(browser, 'trm2', term2)
-    select_field(browser, 'fld2', field2)
+    InputKeyword(browser, 'trm1', term1)
+    SelectField(browser, 'fld1', field1)
+    InputKeyword(browser, 'trm2', term2)
+    SelectField(browser, 'fld2', field2)
     
     browser.find_element_by_name("co1").click()
     browser.find_element_by_xpath("//option[@value='"+BooleanOp+"']").click()
@@ -107,32 +111,26 @@ def download_html(term1, field1, term2, field2, BooleanOp):
     last_page = False
     show_load_time = True # show a loading time of each page
     while not last_page:
-        while True:
-            ############################
-            if show_load_time:
-                START = time.clock()
-            #############################
-            res = requests.get(current_url)
-            ############################
-            if show_load_time:
-                print(time.clock()-START)
-            #############################
-            html = BeautifulSoup(res.text, 'html5lib')
-            tables = html.findAll('table')
-            if len(tables) > 1:
-                break
+        ############################
+        if show_load_time:
+            START = time.clock()
+        #############################
+        res = requests.get(current_url)
+        ############################
+        if show_load_time:
+            print(time.clock()-START)
+        #############################
+        html = BeautifulSoup(res.text, 'html5lib')
+        tables = html.findAll('table')
         table = tables[1]
         rows = table.findAll('tr')[1:]
         print("Rows:", len(rows))
         PRE_patentNo = rows[0].findAll('td')[1].text
         print("1st No:", PRE_patentNo)
 
-        if not os.path.exists(folder):
-            os.makedirs(folder)
+        GetHtml(rows, folder)
 
-        get_html(rows, folder)
-
-        link = get_next_page(html)
+        link = GetNextPage(html)
         if link == 'None':
             last_page = True
         else:

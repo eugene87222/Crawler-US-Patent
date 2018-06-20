@@ -11,7 +11,7 @@ from pandas import DataFrame
 # Parse the html file of each patent and extract the information we want  #
 # param: html -> html code of the patent                                  #
 ###########################################################################
-def parse_html(html):
+def ParseHtml(html):
     p = html.find('p')
     # Patent Abstract
     if p:
@@ -106,7 +106,7 @@ def parse_html(html):
 # param: folder -> folder which csv file will be saved at  #
 #        countries, patentNos... -> patent information     #
 ############################################################
-def PatentInfo2excel(folder, countries, patentNos, dates, titles, abstracts, applicants, IPCs, CPCs):
+def PatentInfo2Excel(folder, countries, patentNos, dates, titles, abstracts, applicants, IPCs, CPCs):
     df = DataFrame({
         'Patent Number': patentNos,
         'Title': titles,
@@ -125,7 +125,7 @@ def PatentInfo2excel(folder, countries, patentNos, dates, titles, abstracts, app
 # param: folder -> folder which csv file will be saved at #
 #        IPC_dict, CPC_dict -> data about CPC, IPC        #
 ###########################################################
-def Statistic2excel(folder, IPC_dict, CPC_dict):
+def Statistic2Excel(folder, IPC_dict, CPC_dict):
     top = 200
     sorted_IPC = sorted(IPC_dict.items(), key=operator.itemgetter(1))
     sorted_IPC.reverse()
