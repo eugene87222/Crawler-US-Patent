@@ -1,23 +1,14 @@
 import warnings
 warnings.filterwarnings('ignore')
 
-import os
-import time
-import requests
 from bs4 import BeautifulSoup
+import requests
+import time
+import os
 
-import selenium
-from selenium import webdriver
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import WebDriverException
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
-###############################################################
-# Download each patent as html file.                          #
-# param: rows   -> 50 results of each page                    #
-#        folder -> folder which html file will be saved at    #
-###############################################################
+# Download each patent as html file.
 def GetHtml(rows, folder):
     # if the folder doesn't exist, create one
     if not os.path.exists(folder+'/html'):
@@ -25,50 +16,32 @@ def GetHtml(rows, folder):
 
     # download each patent in the rows
     for row in rows:
-        link = row.findAll('td')[1].find('a')['href']
-        link = 'http://patft.uspto.gov'+link
+        link = row.select('td')[1].find('a')['href']
+        link = 'http://patft.uspto.gov' + link
 
         while True:
-            res = requests.get(link)
-            html = BeautifulSoup(res.text, 'html5lib')
-            title = html.find('title')
+            res = requests.get(link, headers=headers)
+            soup = BeautifulSoup(res.text, 'lxml')
+            title = soup.find('title')
             if title:
                 break
 
         title = title.text
-        filename = title+'.htm'
+        filename = title + '.htm'
         filename = filename.replace(':', '_')
 
-        file = open(folder+'/html/'+filename, 'w')
+        file = open(folder + '/html/' + filename, 'w')
         file.write(res.text)
         file.close()
         print(filename)
 
-################################################
-# Tell selenium to input term1 / term2         #
-# param: browser -> selenium webdriver object  #
-#        termID  -> ID of input box            #
-#        term    -> term which will be input   #
-################################################
-def InputKeyword(browser, termID, term):
-    browser.find_element_by_id(termID).click()
-    browser.find_element_by_id(termID).clear()
-    browser.find_element_by_id(termID).send_keys(term)
-
-def SelectField(browser, fieldID, value):
-    browser.find_element_by_id(fieldID).click()
-    browser.find_element_by_xpath("//option[@value='"+value+"']").click()
-
-###############################################
-# Check if the current page is not last page  #
-# param: html -> html code of current page    #
-###############################################
-def GetNextPage(html):
-    tables = html.findAll('table')
+# Check if the current page is not last page
+def GetNextPage(soup):
+    tables = soup.findAll('table')
     if tables:
         for table in tables:
             table = table.extract()
-    A = html.findAll('a')
+    A = soup.findAll('a')
     link = 'None'
     for a in A:
         if a.find('img') and a.find('img')['alt'] == '[NEXT_LIST]':
@@ -76,64 +49,35 @@ def GetNextPage(html):
             break
     return link
 
-####################################################################
-# Download the searching result of two input terms (term1, term2)  #
-# param: term1, term2 -> two terms                                 #
-####################################################################
-def DownloadHtml(term1, field1, term2, field2, BooleanOp):
-    folder = term1+'_'+BooleanOp+'_'+term2
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-
-    # open a Firefox browser (can be changed to Chrome if you like)
-    browser = webdriver.Firefox()
-    url = 'http://patft.uspto.gov/netahtml/PTO/search-bool.html'
-    browser.get(url)
-    
-    time.sleep(5)
-
-    InputKeyword(browser, 'trm1', term1)
-    SelectField(browser, 'fld1', field1)
-    InputKeyword(browser, 'trm2', term2)
-    SelectField(browser, 'fld2', field2)
-    
-    browser.find_element_by_name("co1").click()
-    browser.find_element_by_xpath("//option[@value='"+BooleanOp+"']").click()
-    
-    browser.find_element_by_xpath("//input[@value='Search']").click()
-    time.sleep(10)
-
-    while 1:
-        current_url = browser.current_url
-        if current_url != url:
-            break
-
+# Download the content from <url> and store them in <folder>
+def DownloadHtml(url, folder):
+    show_load_time = True
     last_page = False
-    show_load_time = True # show a loading time of each page
+    
     while not last_page:
-        ############################
-        if show_load_time:
+        while True:
             START = time.clock()
-        #############################
-        res = requests.get(current_url)
-        ############################
-        if show_load_time:
-            print(time.clock()-START)
-        #############################
-        html = BeautifulSoup(res.text, 'html5lib')
-        tables = html.findAll('table')
-        table = tables[1]
-        rows = table.findAll('tr')[1:]
-        print("Rows:", len(rows))
-        PRE_patentNo = rows[0].findAll('td')[1].text
-        print("1st No:", PRE_patentNo)
+            res = requests.get(url, headers=headers)
+            print(url)
+            if show_load_time:
+                print(time.clock() - START)
+            soup = BeautifulSoup(res.text, 'lxml')
+            tables = soup.findAll('table')
+            if len(tables) > 1:
+                break
 
+        table = tables[1]
+        rows = table.select('tr')[1:]
+        print(f'Rows: {len(rows)}')
+        prev_patent_num = rows[0].findAll('td')[1].text.strip()
+        print(f'1st No: {prev_patent_num}')
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        
         GetHtml(rows, folder)
 
-        link = GetNextPage(html)
+        link = GetNextPage(soup)
         if link == 'None':
             last_page = True
         else:
-            current_url = 'http://patft.uspto.gov/'+link
-        
-    # browser.close()
+            url = 'http://patft.uspto.gov/' + link

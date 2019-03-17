@@ -1,0 +1,56 @@
+All Fields, 
+Title, TTL
+Abstract, ABST
+Issue Date, ISD
+Patent Number, PN
+Application Date, APD
+Application Serial Number, APN
+Application Type, APT
+Applicant Name, AANM
+Applicant City, AACI
+Applicant State, AAST
+Applicant Country, AACO
+Applicant Type, AAAT
+Assignee Name, AN
+Assignee City, AC
+Assignee State, AS
+Assignee Country, ACN
+International Classification, ICL
+Current CPC Classification, CPC
+Current CPC Classification Class, CPCL
+Current US Classification, CCL
+Primary Examiner, EXP
+Assistant Examiner, EXA
+Inventor Name, IN
+Inventor City, IC
+Inventor State, IS
+Inventor Country, ICN
+Government Interest, GOVT
+Attorney or Agent, LREP
+Parent Case Information, PARN
+PCT Information, PCT
+PCT 371C124 Date, PT3D
+PCT Filing Date, PTAD
+Foreign Priority, PRIR
+Reissue Data, REIS
+Reissued Patent Application Filing Date, RPAF
+Related US App. Data, RLAP
+Related Application Filing Date, RLFD
+Priority Claims Date, PRAD
+Prior Published Document Date, PPPD
+Referenced By, REF
+Foreign References, FREF
+Other References, OREF
+Claim(s), ACLM
+Description/Specification, SPEC
+Patent Family ID, FMID
+130(b) Affirmation Flag, AFFF
+130(b) Affirmation Statement, AFFT
+Certificate of Correction, COFC
+PTAB Trial Certificate, PTAB
+Re-Examination Certificate, REEX
+Supplemental Exam Certificate, SEC
+International Registration Number, ILRN
+International Registration Date, ILRD
+Hague International Filing Date, ILFD
+International Registration Publication Date, ILPD

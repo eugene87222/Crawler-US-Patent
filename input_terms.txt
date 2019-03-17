@@ -1,1 +1,10 @@
-SOC,Title,,,
+compressor, all fields, AND, magnetic, all fields, AND, Daikin, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, Hitachi, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, Panasonic, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, LG, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, Mitsubishi, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, Samsung, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, TOSHIBA, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, TECUMSEH, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, Sanyo, Assignee Name
+compressor, all fields, AND, magnetic, all fields, AND, Danfoss, Assignee Name

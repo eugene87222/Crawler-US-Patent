@@ -5,43 +5,45 @@ import os
 from bs4 import BeautifulSoup
 import DownloadHtml
 import ParseHtml
-import GetAbstract
 
-def ProcessFields(field1, field2):
-    OptionDict = {}
-    file = open('FieldList.txt', 'r')
+def GetFieldList():
+    field_dict = {}
+    file = open('FieldAbbrList.txt', 'r')
     for line in file:
         op = line.split(',')
-        OptionDict[op[0].lower().rstrip().lstrip()] = op[1].rstrip().lstrip()
-    return OptionDict[field1.lower()], OptionDict[field2.lower()]
+        field_dict[op[0].strip().lower()] = op[1].strip()
+    return field_dict
 
-def ProcessBooleanOp(BooleanOp):
-    if BooleanOp == 'ANDNOT':
-        return 'NOT'
-    else:
-        return BooleanOp
+def ProcessPatents(line, switch_DOWNLOAD, switch_PARSE, switch_TXT):
+    field_dict = GetFieldList()
+    item = line.split(',')
+    terms = item[0::3]
+    fields = [field_dict[field.strip().lower()] for field in item[1::3]]
+    bool_op = item[2::3]
+    print(terms)
+    print(fields)
+    print(bool_op)
 
-def ProcessPatents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, switch_PARSE, switch_TXT):
-    if BooleanOp == '':
-        BooleanOp = 'AND'
-    if field1 == '':
-        field1 = 'All Fields'
-    if field2 == '':
-        field2 = 'All Fields'
-
-    print('Term1: '+term1+' with field: '+field1)
-    print(BooleanOp)
-    print('Term2: '+term2+' with field: '+field2)
+    query = ''
+    bool_idx = -1
+    for i in range(len(terms)):
+        if bool_idx > -1:
+            query += f'+{bool_op[bool_idx].strip()}+'
+        if fields[i].strip():
+            query += f'{fields[i].strip()}%2F{terms[i].strip()}'
+        else:
+            query += terms[i].strip()
+        bool_idx += 1
     
-    BooleanOp = ProcessBooleanOp(BooleanOp)
-    field1, field2 = ProcessFields(field1, field2)
+    print(query)
+    url = f'http://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO2&Sect2=HITOFF&p=1&u=%2Fnetahtml%2FPTO%2Fsearch-adv.htm&r=0&f=S&l=50&d=PTXT&Query={query}'
 
     if switch_DOWNLOAD:
-        DownloadHtml.DownloadHtml(term1, field1, term2, field2, BooleanOp)
+        DownloadHtml.DownloadHtml(url, query)
     
     if switch_PARSE:
-        folder = term1+'_'+BooleanOp+'_'+term2
-        files = os.listdir(folder+'/html')
+        folder = query
+        files = os.listdir(folder + '/html')
 
         CPC_dict = dict()
         IPC_dict = dict()
@@ -56,9 +58,9 @@ def ProcessPatents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, swi
         IPCs = list()
 
         for file in files:
-            html = BeautifulSoup(open(folder +'/html/'+file, 'r'))
+            soup = BeautifulSoup(open(folder + '/html/' + file, 'r'), 'lxml')
 
-            country, patentNo, date, title, abstract, applicant, CPC, IPC = ParseHtml.ParseHtml(html)
+            country, patentNo, date, title, abstract, applicant, CPC, IPC = ParseHtml.ParseHtml(soup)
 
             countries.append(country)
             patentNos.append(patentNo)
@@ -84,13 +86,13 @@ def ProcessPatents(term1, field1, term2, field2, BooleanOp, switch_DOWNLOAD, swi
                 else:
                     IPC_dict[i] = 1
             
-        ParseHtml.PatentInfo2Excel(folder, countries, patentNos, dates, titles, abstracts, applicants, CPCs, IPCs)
+        ParseHtml.PatentInfo2excel(folder, countries, patentNos, dates, titles, abstracts, applicants, CPCs, IPCs)
         # CPC2excel(folder, list(CPC_dict.keys()))
         # IPC2excel(folder, list(IPC_dict.keys()))
-        ParseHtml.Statistic2Excel(folder, IPC_dict, CPC_dict)
+        ParseHtml.Statistic2excel(folder, IPC_dict, CPC_dict)
 
     if switch_TXT:
-        folder = term1+'_'+BooleanOp+'_'+term2
-        if not os.path.exists(folder+'/txt'):
-            os.makedirs(folder+'/txt')
-        GetAbstract.GetACD(folder)
+        folder = query
+        if not os.path.exists(folder + '/txt'):
+            os.makedirs(folder + '/txt')
+        ParseHtml.GetAbsClaimDesc(folder)
