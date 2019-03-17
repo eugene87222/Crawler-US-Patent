@@ -6,7 +6,7 @@
 
 ## Prerequisite
 - [install Python](https://www.python.org/)
-- install requests, beautifulsoup, pandas, selenium
+- install requests, beautifulsoup, pandas
 ```
 pip3 install requests
 pip3 install beautifulsoup4
