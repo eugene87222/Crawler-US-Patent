@@ -11,24 +11,16 @@
 pip3 install requests
 pip3 install beautifulsoup4
 pip3 install pandas
-pip3 install selenium
 ```
-- [download selenium drivers](http://selenium-python.readthedocs.io/installation.html#drivers)
-  - [Chrome](https://sites.google.com/a/chromium.org/chromedriver/downloads)
-  - [Edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
-  - [Firefox](https://github.com/mozilla/geckodriver/releases)
-  - [Safari](https://webkit.org/blog/6900/webdriver-support-in-safari-10/)
-
 ---
 ## How to use
 You can either set the input terms by yourself or let the program to read input terms from input_terms.txt
-- If you want to set them by yourself, switch "input_from_txt" to "False" in [main.py](https://github.com/eugene87222/US-Patent/blob/master/main.py) and assign terms, fields and boolean operator directly.
-- If you want the program read terms from txt file, switch "input_from_txt" to "True" in [main.py](https://github.com/eugene87222/US-Patent/blob/master/main.py).
-In "input_terms.txt", the format of each line is _term1,field1,term2,field2,boolean operator_. __There must be four commas.__  
+In "input_terms.txt", the format of each line is 
+```
+term1, field1, boolop1, term2, field2, boolop2, ... , boolopN-1, termN, fieldN
+```
 e.g.  
-Electric vehicle,Title,lithium battery,All Fields,AND  
-SOC,Title,,,   
-...
+Electric vehicle, Title, AND, lithium battery, All Fields
 
 There are 3 types of boolean operator and 56 types of fields.  
 Boolean operator:
@@ -59,4 +51,3 @@ After all, use the command below to run the program.
 ```
 python main.py
 ```
-__Note: the program will open a browser automatically when you start it, do not close the browser or there will be some errors.__
